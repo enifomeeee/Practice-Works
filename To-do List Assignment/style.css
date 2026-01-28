@@ -1,0 +1,108 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f5f5f5;
+  font-family: "Segoe UI", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.app-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px #00000014;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  color: #000000;
+  letter-spacing: -1px;
+}
+
+header p {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.input-area {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #000;
+  border-radius: 8px;
+  outline: none;
+}
+
+#addBtn {
+  padding: 0 20px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#addBtn:hover {
+  background-color: #333;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  background: #fff;
+  padding: 12px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.delete-btn:hover {
+  color: #000;
+}
+
+.clear-btn {
+  width: 100%;
+  margin-top: 1.5rem;
+  background: none;
+  border: 1px solid #eee;
+  padding: 8px;
+  border-radius: 8px;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.clear-btn:hover {
+  background: #eee;
+  color: #000;
+}
