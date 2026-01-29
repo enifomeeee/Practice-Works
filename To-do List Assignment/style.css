@@ -106,3 +106,25 @@ li {
   background: #eee;
   color: #000;
 }
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  flex-grow: 1;
+}
+
+.task-time {
+  font-size: 0.7rem;
+  color: #aaa;
+  margin-top: 4px;
+}
+
+li.checked .task-text {
+  text-decoration: line-through;
+  color: #ccc;
+}
+
+li.checked {
+  background-color: #fafafa;
+}
