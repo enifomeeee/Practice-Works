@@ -1,6 +1,9 @@
 // Game variables
 let score = 0;
 let gameActive = false;
+let timeLeft = 30;
+let timerInterval;
+const GOAL = 30;
 
 // Array of balloon colors
 const balloonColors = [
@@ -12,14 +15,17 @@ const balloonColors = [
   "#FF69B4",
 ];
 
+// Function to create a single balloon
 function createBalloon() {
+  // Create a div element for the balloon
   const balloon = document.createElement("div");
   balloon.className = "balloon";
 
+  // Pick a random color
   const randomColor =
     balloonColors[Math.floor(Math.random() * balloonColors.length)];
 
-  // SVG balloon
+  // Add the SVG inside the balloon div with random color
   balloon.innerHTML = `
         <svg width="80px" height="80px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <g id="color">
@@ -36,50 +42,113 @@ function createBalloon() {
         </svg>
     `;
 
-  // Generate random position
+  // Generate random position (avoiding top-left corner where controls are)
   let randomX, randomY;
   do {
     randomX = Math.random() * (window.innerWidth - 80);
     randomY = Math.random() * (window.innerHeight - 80);
-  } while (randomX < 250 && randomY < 100);
+  } while (randomX < 300 && randomY < 120); // Avoid top-left area for controls
 
-  // Balloon position
+  // Set the balloon's position
   balloon.style.left = randomX + "px";
   balloon.style.top = randomY + "px";
 
+  // Add click event to remove balloon and create new one
   balloon.addEventListener("click", function () {
     if (gameActive) {
       balloon.remove();
       score++;
       updateScore();
-      createBalloon();
+
+      // Check if player reached the goal
+      if (score >= GOAL) {
+        endGame(true);
+      } else {
+        createBalloon(); // Create a new balloon
+      }
     }
   });
 
+  // Add the balloon to the game container
   document.getElementById("game-container").appendChild(balloon);
 }
 
-// Update score display
+// Function to update the score display
 function updateScore() {
   document.getElementById("score").textContent = score;
 }
 
+// Function to update timer display
+function updateTimer() {
+  document.getElementById("timer").textContent = timeLeft;
+}
+
+// Function to start the countdown timer
+function startTimer() {
+  timerInterval = setInterval(function () {
+    timeLeft--;
+    updateTimer();
+
+    if (timeLeft <= 0) {
+      endGame(false);
+    }
+  }, 1000); // Update every 1 second
+}
+
+// Function to end the game
+function endGame(won) {
+  gameActive = false;
+  clearInterval(timerInterval);
+
+  // Remove all balloons
+  document.getElementById("game-container").innerHTML = "";
+
+  // Show game over modal
+  const modal = document.getElementById("game-over-modal");
+  const title = document.getElementById("result-title");
+  const message = document.getElementById("result-message");
+
+  if (won) {
+    title.textContent = "🎉 You Win! 🎉";
+    title.style.color = "#4CAF50";
+    message.textContent = `Congratulations! You popped ${score} balloons with ${timeLeft} seconds remaining!`;
+  } else {
+    title.textContent = "😞 Game Over 😞";
+    title.style.color = "#f44336";
+    message.textContent = `Time's up! You only popped ${score} out of ${GOAL} balloons. Try again!`;
+  }
+
+  modal.classList.add("show");
+}
+
 // Function to start the game
 function startGame() {
-  // Reset score
+  // Reset variables
   score = 0;
+  timeLeft = 30;
+  gameActive = true;
+
+  // Update displays
   updateScore();
+  updateTimer();
 
   // Clear any existing balloons
   document.getElementById("game-container").innerHTML = "";
 
-  // Set game as active
-  gameActive = true;
+  // Hide game over modal
+  document.getElementById("game-over-modal").classList.remove("show");
 
-  // 5 balloons to start
+  // Create 5 balloons to start
   for (let i = 0; i < 5; i++) {
     createBalloon();
   }
+
+  // Start the timer
+  startTimer();
 }
 
+// Add event listener to start button
 document.getElementById("start-btn").addEventListener("click", startGame);
+
+// Add event listener to play again button
+document.getElementById("play-again-btn").addEventListener("click", startGame);
