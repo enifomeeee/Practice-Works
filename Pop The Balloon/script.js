@@ -3,7 +3,11 @@ let score = 0;
 let gameActive = false;
 let timeLeft = 30;
 let timerInterval;
-const GOAL = 30;
+let targetColor = "";
+const GOAL = 50;
+const BALLOON_LIFETIME = 5000;
+const TOTAL_BALLOONS = 10;
+const MIN_TARGET_BALLOONS = 3;
 
 // Array of balloon colors
 const balloonColors = [
@@ -15,19 +19,41 @@ const balloonColors = [
   "#FF69B4",
 ];
 
-// Function to create a single balloon
-function createBalloon() {
-  // Create a div element for the balloon
+// Random target color
+function setTargetColor() {
+  targetColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+  document.getElementById("target-color-box").style.backgroundColor =
+    targetColor;
+}
+
+function countTargetBalloons() {
+  const allBalloons = document.querySelectorAll(".balloon");
+  let count = 0;
+  allBalloons.forEach((balloon) => {
+    if (balloon.dataset.color === targetColor) {
+      count++;
+    }
+  });
+  return count;
+}
+
+function createBalloon(forceTargetColor = false) {
   const balloon = document.createElement("div");
   balloon.className = "balloon";
 
-  // Pick a random color
-  const randomColor =
-    balloonColors[Math.floor(Math.random() * balloonColors.length)];
+  let randomColor;
+  if (forceTargetColor) {
+    randomColor = targetColor;
+  } else {
+    randomColor =
+      balloonColors[Math.floor(Math.random() * balloonColors.length)];
+  }
 
-  // Add the SVG inside the balloon div with random color
+  balloon.dataset.color = randomColor;
+
+  // SVG with random color
   balloon.innerHTML = `
-        <svg width="80px" height="80px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <svg width="60px" height="60px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <g id="color">
             <polygon fill="${randomColor}" points="33.9763,42.6906 34.0061,49.1497 34.0359,55.6089 28.1166,51.8019 22.1972,47.995 28.0868,45.3428"/>
             <circle cx="45" cy="27" r="23.0003" fill="${randomColor}"/>
@@ -42,48 +68,79 @@ function createBalloon() {
         </svg>
     `;
 
-  // Generate random position (avoiding top-left corner where controls are)
+  // Random positions
   let randomX, randomY;
   do {
-    randomX = Math.random() * (window.innerWidth - 80);
-    randomY = Math.random() * (window.innerHeight - 80);
-  } while (randomX < 300 && randomY < 120); // Avoid top-left area for controls
+    randomX = Math.random() * (window.innerWidth - 60);
+    randomY = Math.random() * (window.innerHeight - 60);
+  } while (randomX < 300 && randomY < 180);
 
-  // Set the balloon's position
+  // Balloon's position
   balloon.style.left = randomX + "px";
   balloon.style.top = randomY + "px";
 
-  // Add click event to remove balloon and create new one
+  // Balloon timeout
+  const disappearTimeout = setTimeout(function () {
+    if (gameActive && balloon.parentElement) {
+      balloon.classList.add("fading");
+      setTimeout(function () {
+        if (balloon.parentElement) {
+          balloon.remove();
+          spawnNewBalloon();
+        }
+      }, 500);
+    }
+  }, BALLOON_LIFETIME);
+
   balloon.addEventListener("click", function () {
     if (gameActive) {
+      clearTimeout(disappearTimeout);
       balloon.remove();
-      score++;
-      updateScore();
 
-      // Check if player reached the goal
-      if (score >= GOAL) {
-        endGame(true);
+      // Check if clicked balloon matches target color
+      if (balloon.dataset.color === targetColor) {
+        // Correct color!
+        score++;
+        updateScore();
+
+        // Check if player reached the goal
+        if (score >= GOAL) {
+          endGame(true);
+        } else {
+          spawnNewBalloon();
+        }
       } else {
-        createBalloon(); // Create a new balloon
+        // Wrong color - GAME OVER!
+        endGame(false, true);
       }
     }
   });
 
-  // Add the balloon to the game container
   document.getElementById("game-container").appendChild(balloon);
 }
 
-// Function to update the score display
+function spawnNewBalloon() {
+  const targetCount = countTargetBalloons();
+
+  // If we're below the minimum, force a target color balloon
+  if (targetCount < MIN_TARGET_BALLOONS) {
+    createBalloon(true);
+  } else {
+    createBalloon(false);
+  }
+}
+
+// update the score display
 function updateScore() {
   document.getElementById("score").textContent = score;
 }
 
-// Function to update timer display
+// update timer display
 function updateTimer() {
   document.getElementById("timer").textContent = timeLeft;
 }
 
-// Function to start the countdown timer
+// start the countdown timer
 function startTimer() {
   timerInterval = setInterval(function () {
     timeLeft--;
@@ -92,11 +149,11 @@ function startTimer() {
     if (timeLeft <= 0) {
       endGame(false);
     }
-  }, 1000); // Update every 1 second
+  }, 1000);
 }
 
 // Function to end the game
-function endGame(won) {
+function endGame(won, wrongColor = false) {
   gameActive = false;
   clearInterval(timerInterval);
 
@@ -112,6 +169,10 @@ function endGame(won) {
     title.textContent = "🎉 You Win! 🎉";
     title.style.color = "#4CAF50";
     message.textContent = `Congratulations! You popped ${score} balloons with ${timeLeft} seconds remaining!`;
+  } else if (wrongColor) {
+    title.textContent = "❌ Wrong Color! ❌";
+    title.style.color = "#f44336";
+    message.textContent = `Oops! You popped the wrong color balloon. You scored ${score} points. Try again!`;
   } else {
     title.textContent = "😞 Game Over 😞";
     title.style.color = "#f44336";
@@ -128,6 +189,9 @@ function startGame() {
   timeLeft = 30;
   gameActive = true;
 
+  // Set a random target color
+  setTargetColor();
+
   // Update displays
   updateScore();
   updateTimer();
@@ -138,17 +202,19 @@ function startGame() {
   // Hide game over modal
   document.getElementById("game-over-modal").classList.remove("show");
 
-  // Create 5 balloons to start
-  for (let i = 0; i < 5; i++) {
-    createBalloon();
+  for (let i = 0; i < MIN_TARGET_BALLOONS; i++) {
+    createBalloon(true);
+  }
+
+  // Then fill the rest with random colors
+  for (let i = MIN_TARGET_BALLOONS; i < TOTAL_BALLOONS; i++) {
+    createBalloon(false);
   }
 
   // Start the timer
   startTimer();
 }
 
-// Add event listener to start button
 document.getElementById("start-btn").addEventListener("click", startGame);
 
-// Add event listener to play again button
 document.getElementById("play-again-btn").addEventListener("click", startGame);

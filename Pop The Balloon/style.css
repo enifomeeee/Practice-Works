@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #87ceeb; /* Sky blue */
+  background-color: #87ceeb;
   font-family: Arial, sans-serif;
 }
 
@@ -15,12 +15,11 @@ body {
 .balloon {
   position: absolute;
   cursor: pointer;
-  /* Remove any borders or outlines */
   border: none;
   outline: none;
+  transition: opacity 0.3s;
 }
 
-/* Remove border from SVG */
 .balloon svg {
   display: block;
   border: none;
@@ -66,23 +65,54 @@ body {
   font-size: 18px;
   font-weight: bold;
   color: #333;
+  margin-right: 15px;
+}
+
+#target-display {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+#target-color-box {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid #000;
+  vertical-align: middle;
+  margin-left: 5px;
 }
 
 /* Floating animation */
 @keyframes float {
   0% {
-    transform: translateY(0px);
+    transform: translateY(0px) rotate(0deg);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-30px) rotate(5deg);
   }
   100% {
-    transform: translateY(0px);
+    transform: translateY(0px) rotate(0deg);
   }
 }
 
 .balloon {
-  animation: float 3s ease-in-out infinite;
+  animation: float 2s ease-in-out infinite;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.balloon.fading {
+  animation: fadeOut 0.5s forwards;
 }
 
 /* Game over modal */
@@ -98,6 +128,8 @@ body {
   z-index: 2000;
   text-align: center;
   display: none;
+  max-width: 90%;
+  width: 400px;
 }
 
 #game-over-modal.show {
@@ -127,4 +159,43 @@ body {
 
 #play-again-btn:hover {
   background-color: #45a049;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  #game-controls {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  #start-btn {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+
+  #score-display,
+  #timer-display,
+  #target-display {
+    font-size: 16px;
+    display: block;
+    margin: 5px 0;
+  }
+
+  #target-color-box {
+    width: 25px;
+    height: 25px;
+  }
+
+  #game-over-modal {
+    width: 85%;
+    padding: 20px;
+  }
+
+  #game-over-modal h2 {
+    font-size: 24px;
+  }
+
+  #game-over-modal p {
+    font-size: 16px;
+  }
 }
