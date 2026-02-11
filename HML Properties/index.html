@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HML Properties - Luxury Real Estate in Nigeria</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+        nav:hover {
+            background-color: rgba(0, 0, 0, 1);
+        }
+        .logo {
+            font-size: 2 rem;
+            font-weight: bold;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+        .nav-links li a {
+            transition: color 0.3s ease;
+        }
+        .nav-links li a:hover {
+            color: #d4af37; /* Gold accent */
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background-color: #000; /* Placeholder for background image */
+            /* background-image: url('hero-placeholder.jpg'); Use a real image URL */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease-in;
+        }
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .cta {
+            background-color: #d4af37;
+            color: #000;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .cta:hover {
+            transform: scale(1.05);
+            background-color: #b08d2e;
+        }
+
+        /* About Section */
+        .about {
+            padding: 4rem 2rem;
+            background-color: #fff;
+            text-align: center;
+        }
+        .about h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .stat {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 4rem 2rem;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .projects h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .project-card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .project-img {
+            height: 200px;
+            background-color: #ccc; /* Placeholder */
+            /* Use: background-image: url('project1.jpg'); */
+        }
+        .project-info {
+            padding: 1rem;
+        }
+        .project-info h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 4rem 2rem;
+            background-color: #fff;
+            text-align: center;
+        }
+        .services h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .service-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .service {
+            flex: 1 1 300px;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .service:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Blog Section */
+        .blog {
+            padding: 4rem 2rem;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .blog h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .blog-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .blog-post {
+            background-color: #fff;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 4rem 2rem;
+            background-color: #fff;
+            text-align: center;
+        }
+        .contact h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        input, textarea {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #d4af37;
+            color: #000;
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #b08d2e;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+        .social-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .social-links a {
+            transition: color 0.3s ease;
+        }
+        .social-links a:hover {
+            color: #d4af37;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+            }
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .stats {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <!-- TODO: Replace with your company name or logo -->
+        <div class="logo">HML Properties</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <h1>Redefining Luxury Living in Nigeria</h1>
+        <p>Discover premium real estate developments in Lagos, Abuja, and beyond.</p>
+        <a href="#contact" class="cta">Schedule Appointment</a>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <h2>Our Story</h2>
+        <!-- TODO: Update this paragraph with your company story -->
+        <p>Prime Naija Developments is a leading real estate developer in Nigeria, specializing in luxury residential, commercial, and mixed-use projects. With a focus on innovation and quality, we transform visions into reality.</p>
+        <div class="stats">
+            <!-- TODO: Update these stats with your real achievements -->
+            <div class="stat">25+ Completed Projects</div>
+            <div class="stat">150k+ sq.m Developed</div>
+            <div class="stat">5 Ongoing Developments</div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <h2>Our Projects</h2>
+        <!-- TODO: Replace these with your real projects and images -->
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="project-img"></div> <!-- Add background-image in CSS for real img -->
+                <div class="project-info">
+                    <h3>Lagos Elite Towers</h3>
+                    <p>Luxury high-rise in Ikoyi with stunning ocean views.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-img"></div>
+                <div class="project-info">
+                    <h3>Abuja Green Estates</h3>
+                    <p>Sustainable residential community in the heart of Abuja.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-img"></div>
+                <div class="project-info">
+                    <h3>Banana Island Villas</h3>
+                    <p>Exclusive villas offering unparalleled luxury.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <h2>Our Services</h2>
+        <!-- TODO: Edit these services to match your offerings -->
+        <div class="service-list">
+            <div class="service">
+                <h3>Residential Development</h3>
+                <p>Creating dream homes with modern amenities.</p>
+            </div>
+            <div class="service">
+                <h3>Commercial Development</h3>
+                <p>Building state-of-the-art office spaces and malls.</p>
+            </div>
+            <div class="service">
+                <h3>Hospitality Projects</h3>
+                <p>Developing luxury hotels and resorts.</p>
+            </div>
+            <div class="service">
+                <h3>Consultation</h3>
+                <p>Expert advice for government and institutional projects.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="blog">
+        <h2>Latest News</h2>
+        <!-- TODO: Add your own blog posts or news here -->
+        <div class="blog-posts">
+            <div class="blog-post">
+                <h3>New Project Launch in Lagos</h3>
+                <p>Exciting updates on our latest luxury development.</p>
+            </div>
+            <div class="blog-post">
+                <h3>Real Estate Trends in Nigeria</h3>
+                <p>Insights into the growing market.</p>
+            </div>
+            <div class="blog-post">
+                <h3>Sustainability in Building</h3>
+                <p>Our commitment to green practices.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2>Get in Touch</h2>
+        <!-- TODO: Connect this form to your email or CRM -->
+        <form>
+            <input type="text" placeholder="Your Name">
+            <input type="email" placeholder="Your Email">
+            <textarea placeholder="Your Message"></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Unique Feature: Property Matchmaker Quiz -->
+    <section id="matchmaker" class="about" style="background:#f0f6ff;">
+        <h2>Property Matchmaker</h2>
+        <p>Not sure what property fits you? Take our quick quiz!</p>
+        <div id="quiz-box" style="max-width:400px;margin:2rem auto;text-align:left;background:#fff;padding:2rem;border-radius:10px;box-shadow:0 2px 8px #0001;">
+            <div id="quiz-step-1">
+                <label>What is your main goal?</label><br>
+                <select id="goal">
+                    <option value="">Select...</option>
+                    <option value="live">To live in</option>
+                    <option value="invest">Investment</option>
+                    <option value="business">Business/Office</option>
+                </select>
+                <button onclick="nextStep(1)" type="button" style="margin-top:1rem;">Next</button>
+            </div>
+            <div id="quiz-step-2" style="display:none;">
+                <label>Preferred location?</label><br>
+                <select id="location">
+                    <option value="">Select...</option>
+                    <option value="lagos">Lagos</option>
+                    <option value="abuja">Abuja</option>
+                    <option value="other">Other</option>
+                </select>
+                <button onclick="nextStep(2)" type="button" style="margin-top:1rem;">Next</button>
+            </div>
+            <div id="quiz-step-3" style="display:none;">
+                <label>Budget range?</label><br>
+                <select id="budget">
+                    <option value="">Select...</option>
+                    <option value="low">Below ₦50M</option>
+                    <option value="mid">₦50M - ₦200M</option>
+                    <option value="high">Above ₦200M</option>
+                </select>
+                <button onclick="showResult()" type="button" style="margin-top:1rem;">See Match</button>
+            </div>
+            <div id="quiz-result" style="display:none;">
+                <h3>Your Match:</h3>
+                <div id="result-text" style="margin-bottom:1rem;"></div>
+                <button onclick="restartQuiz()" type="button">Try Again</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <ul class="social-links">
+            <!-- TODO: Update these links to your real social media pages -->
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">LinkedIn</a></li>
+        </ul>
+        <!-- TODO: Update your company name and year -->
+        <p>&copy; 2025 HML Properties. All rights reserved.</p>
+    </footer>
+
+    <!-- Property Matchmaker Script -->
+    <script>
+    function nextStep(step) {
+        if (step === 1) {
+            if (!document.getElementById('goal').value) return alert('Please select your goal.');
+            document.getElementById('quiz-step-1').style.display = 'none';
+            document.getElementById('quiz-step-2').style.display = 'block';
+        } else if (step === 2) {
+            if (!document.getElementById('location').value) return alert('Please select a location.');
+            document.getElementById('quiz-step-2').style.display = 'none';
+            document.getElementById('quiz-step-3').style.display = 'block';
+        }
+    }
+    function showResult() {
+        var goal = document.getElementById('goal').value;
+        var location = document.getElementById('location').value;
+        var budget = document.getElementById('budget').value;
+        if (!budget) return alert('Please select a budget.');
+        var result = '';
+        if (goal === 'live' && location === 'lagos' && budget === 'high') {
+            result = 'We recommend our Banana Island Villas for ultimate luxury living in Lagos.';
+        } else if (goal === 'invest' && budget === 'mid') {
+            result = 'Our Abuja Green Estates offer great investment opportunities.';
+        } else if (goal === 'business') {
+            result = 'Check out our Commercial Developments for your business needs.';
+        } else {
+            result = 'Contact us for a personalized property recommendation!';
+        }
+        document.getElementById('quiz-step-3').style.display = 'none';
+        document.getElementById('quiz-result').style.display = 'block';
+        document.getElementById('result-text').innerText = result;
+    }
+    function restartQuiz() {
+        document.getElementById('goal').value = '';
+        document.getElementById('location').value = '';
+        document.getElementById('budget').value = '';
+        document.getElementById('quiz-result').style.display = 'none';
+        document.getElementById('quiz-step-1').style.display = 'block';
+        document.getElementById('quiz-step-2').style.display = 'none';
+        document.getElementById('quiz-step-3').style.display = 'none';
+    }
+    </script>
+
+</body>
+</html>
